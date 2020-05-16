@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
+	<defs>
+		<radialGradient id="gradDarkGray" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+			<stop offset="0%" style="stop-color:white; stop-opacity:1" />
+			<stop offset="70%" style="stop-color:gray; stop-opacity:1" />
+			<stop offset="100%" style="stop-color:dimgray ;stop-opacity:1" />
+		</radialGradient>
+		<radialGradient id="gradGray" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+			<stop offset="0%" style="stop-color:white; stop-opacity:1" />
+			<stop offset="100%" style="stop-color:darkgray ;stop-opacity:1" />
+		</radialGradient>
+		 <linearGradient id="gradWhite" x1="40%" y1="50%" x2="90%" y2="90%">
+			<stop offset="0%" style="stop-color:white;stop-opacity:1" />
+			<stop offset="100%" style="stop-color:darkgray;stop-opacity:1" />
+		</linearGradient>     
+	</defs>
+    <symbol id="grayCloud">
+		<path  d="M20,15 Q25,0 45,11 Q60,5 60,20 A30,15 5 1,1 20,15 Z" />
+	</symbol>
+	<symbol id="whiteCloud">
+		<path fill="url(#gradWhite)" d="M11,47 Q13,37 21,42 Q31,30 41,38 A28,21 -25 1,1 35,75 Q23,85 19,73 A12,12 0 0,1 11,47Z" />
+	</symbol>
+	<symbol id="thunderBolt">
+    <path fill="black" d="M15,0 L1,23 L8,23 L0,40 L15,19 L8,19Z" />
+  </symbol>
+	
+	<g>
+		<use href="#grayCloud" class="small-cloud" fill="url(#gradGray)"/>
+		<animateTransform attributeName="transform" type="translate" values="0 15; 15 0; 30 0; 25 0; 0 15" dur="8s" repeatCount="indefinite"/>
+		<animate attributeName="opacity" values="0.5;1;1;1;0.5" dur="8s" repeatCount="indefinite"/>
+	</g>
+	<g>
+		<use href="#grayCloud" x="25" y="10" class="reverse-small-cloud" fill="url(#gradDarkGray)"/>
+		<animateTransform attributeName="transform" type="translate" values="0 -15; -15 0; -30 0; -25 0; 0 -15" dur="6s" repeatCount="indefinite"/>
+		<animate attributeName="opacity" values="0.5;1;1;1;0.5" dur="6s" repeatCount="indefinite"/>
+	</g>
+	<g>
+	    <use href="#thunderBolt" x="30" y="61" class="lighting animated infinite flash"/>
+		<animate attributeName="opacity" values="0;1;1;1;0;0" dur="2s"  begin="0.4s"  repeatCount="indefinite"/>
+	</g>
+	<use href="#whiteCloud" x="7" />
+	<g>
+	    <use href="#thunderBolt" x="45" y="56" class="lighting animated infinite flash delay-1s"/>
+		<animate attributeName="opacity" values="0;1;1;1;0;0" dur="2s" repeatCount="indefinite"/>
+	</g>
+</svg>

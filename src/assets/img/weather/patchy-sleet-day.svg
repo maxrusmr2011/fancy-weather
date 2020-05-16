@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 100 100">
+	<defs>
+		<radialGradient id="gradYellow" cx="50%" cy="50%" r="80%" fx="90%" fy="80%">
+			<stop offset="0%" style="stop-color:yellow; stop-opacity:1" />
+			<stop offset="100%" style="stop-color:orange ;stop-opacity:1" />
+		</radialGradient> 
+		<radialGradient id="gradGray" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+			<stop offset="0%" style="stop-color:white; stop-opacity:1" />
+			<stop offset="100%" style="stop-color:darkgray ;stop-opacity:1" />
+		</radialGradient>
+		 <linearGradient id="gradWhite" x1="40%" y1="50%" x2="90%" y2="90%">
+			<stop offset="0%" style="stop-color:white;stop-opacity:1" />
+			<stop offset="100%" style="stop-color:darkgray;stop-opacity:1" />
+		</linearGradient>    
+	</defs>
+	<symbol id="sun">
+    <!-- center -->
+		<circle cx="50" cy="50" r="20" fill="url(#gradYellow)" />
+		<!-- long rays -->
+		<g stroke="#ffdd1a" stroke-width="3" stroke-dasharray="10"  stroke-dashoffset="10">
+			<line x1="50" y1="27" x2="50" y2="2" class="longRay" />
+			<line x1="50" y1="73" x2="50" y2="98" class="longRay" />
+			<line x1="27" y1="50" x2="2" y2="50" class="longRay" />
+			<line x1="73" y1="50" x2="98" y2="50" class="longRay" />
+			<line x1="34" y1="34" x2="16" y2="16" class="longRay" />
+			<line x1="66" y1="66" x2="84" y2="84" class="longRay" />
+			<line x1="34" y1="66" x2="16" y2="84" class="longRay" />
+			<line x1="66" y1="34" x2="84" y2="16" class="longRay" />
+			<animate attributeName="stroke-dashoffset" values="100;0" dur="4s" repeatCount="indefinite"/>
+		</g>
+		<!-- short rays -->
+		<g  stroke="#ffdd1a" stroke-width="1.5" stroke-dasharray="3" stroke-dashoffset="1">
+			<line x1="59" y1="29" x2="66" y2="13" class="shortRay"/>
+			<line x1="71" y1="42" x2="87" y2="35" class="shortRay" />
+			<line x1="71" y1="58.5" x2="87" y2="65" class="shortRay" />
+			<line x1="59" y1="71" x2="66" y2="87" class="shortRay" />
+			<line x1="41" y1="71" x2="34" y2="87" class="shortRay" />
+			<line x1="29.5" y1="58.5" x2="13" y2="66" class="shortRay" />
+			<line x1="29" y1="42" x2="13" y2="35" class="shortRay" />
+			<line x1="41" y1="29" x2="35" y2="13" class="shortRay" />
+			<animate attributeName="stroke-dashoffset" values="20;0" dur="3s" repeatCount="indefinite"/>
+		</g>
+	</symbol>
+	<symbol id="grayCloud">
+		<path  d="M20,15 Q25,0 45,11 Q60,5 60,20 A30,15 5 1,1 20,15 Z" />
+	</symbol>
+	<symbol id="whiteCloud">
+		<path fill="url(#gradWhite)" d="M11,47 Q13,37 21,42 Q31,30 41,38 A28,21 -25 1,1 35,75 Q23,85 19,73 A12,12 0 0,1 11,47Z" />
+	</symbol>
+  <symbol id="snowFlake" fill="none" stroke="white" stroke-width="0.6">
+    <path d="M5,0 L5,10 M0,5 L10,5 M1.5,1.5 L8.5,8.5 M8.5,1.5 L1.5,8.5" />
+    <path d="M3.5,0.25 L5,2 L6.5,0.25 M3.5,9.75 L5,8 L6.5,9.75" />
+    <path d="M0.25,3.5 L2,5 L0.25,6.5 M9.75,3.5 L8,5 L9.75,6.5" />
+    <path d="M0.75,2.90 L2.85,2.85 L2.90,0.75 M7.25,9.35 L7.15,7.15 L9.35,7.25" />
+    <path d="M0.75,7.25 L2.85,7.15 L2.90,9.35 M7.15,0.75 L7.25,2.85 L9.35,2.90" />
+  </symbol>
+	<symbol id="rainDrizzle" stroke="lightblue" stroke-width="1" stroke-dasharray="3"
+ stroke-dashoffset="1">
+		<line x1="20" y1="2" x2="10" y2="40" />
+		<animate attributeName="stroke-dashoffset" values="40;10" dur="5s" repeatCount="indefinite"/>
+	</symbol>
+	
+	<use href="#sun" x="-12" y="-18"/>
+	<g>
+		<use href="#grayCloud" class="small-cloud" fill="url(#gradGray)"/>
+		<animateTransform attributeName="transform" type="translate" values="0 15; 15 0; 30 0; 25 0; 0 15" dur="8s" repeatCount="indefinite"/>
+		<animate attributeName="opacity" values="0.5;1;1;1;0.5" dur="8s" repeatCount="indefinite"/>
+	</g>
+	<g>
+		<use id="snowFlake2" href="#snowFlake" x="30" y="65"/>
+		<animateTransform attributeName="transform" type="translate" values="5 0; 0 10; 7 20; 0 30; 10 40" dur="3s" repeatCount="indefinite" begin="0.8s" />
+		<animate attributeName="opacity" values="1;1;1;0.75;0.5" dur="3s" repeatCount="indefinite" begin="0.8s" />
+	</g>
+	<g>
+		<use id="snowFlake4" href="#snowFlake" x="45" y="65"/>
+		<animateTransform attributeName="transform" type="translate" values="5 0; 0 10; 7 20; 0 30; 10 40" dur="6s" repeatCount="indefinite" begin="1s" />
+		<animate attributeName="opacity" values="1;1;1;0.75;0.5" dur="6s" repeatCount="indefinite" begin="1s" />
+	</g>
+	<g>
+		<use id="snowFlake5" href="#snowFlake" x="58" y="65"/>
+		<animateTransform attributeName="transform" type="translate" values="5 0; 0 10; 7 20; 0 30; 10 40" dur="4s" repeatCount="indefinite" begin="0.6s" />
+		<animate attributeName="opacity" values="1;1;1;0.75;0.5" dur="4s" repeatCount="indefinite" begin="0.6s" />
+	</g>
+	<use href="#rainDrizzle" x="25" y="65"/>
+    <use href="#rainDrizzle" x="40" y="65"/>
+	<use href="#whiteCloud" x="7" />
+</svg>
