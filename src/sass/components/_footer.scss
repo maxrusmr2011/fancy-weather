@@ -1,0 +1,30 @@
+.footer {
+  background: rgba(0,0,0,0.5);
+  color: $footer-color-text;
+  font-size: 0.4rem;
+  &__github {
+    display: flex;
+    align-items: center;
+    &:link,
+    &:visited {
+      color: $footer-color-text;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20px;
+  }
+}
+
+.github__icon  {
+  height: 15px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: $footer-color-text;
+}

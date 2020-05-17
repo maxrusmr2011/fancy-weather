@@ -1,0 +1,98 @@
+.title {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -10;
+  opacity: 0;
+}
+.header {
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    position: relative;
+  }
+  &__buttons,
+  &__search {
+    display: flex;
+  }
+  &__error {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0;
+    z-index: 1;
+    text-align: center;
+  }
+  &__input {
+    border: 0;
+    background: $btn-bg-color;
+    border-radius: 5px 0 0 5px;
+  }
+  .btn {
+    height: $btn-size;
+    border: 0;
+    
+    &-refresh {
+      width: $btn-size;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      // background: #000;
+      background: $btn-bg-color-active;
+      img {
+        width: 30%;
+        height: 30%;
+      }
+    }
+    &-cel,
+    &-far {
+      width: $btn-size;
+      background: $btn-bg-color;
+      color: $btn-color;
+    }
+    &-lang {
+      width: 100px;
+      // margin: 0 5px;
+      background: $btn-bg-color-active;
+      color: $btn-color;
+    }
+
+    &-cel {
+      border-radius: 5px 0 0 5px;
+    }
+    &-far {
+      border-radius: 0 5px 5px 0;;
+    }
+    &-active {
+      background: $btn-bg-color-active;
+      
+    }
+    &-mic {
+      width: 30px;
+      background: $btn-bg-color;
+      img {
+        filter: invert(0.5);
+      }
+    }
+    &-search {
+      width: 100px;
+      background: $btn-bg-color-active;
+      border-radius: 0 5px 5px 0;
+      color: $btn-color;
+    }
+  }
+}
+.dropdown {
+  position: relative;
+  margin: 0 5px;
+  &__menu {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
