@@ -14,7 +14,7 @@ const weatherApi = {
 };
 
 const photoApi = {
-  url: '_https://api.unsplash.com/photos/random',
+  url: 'https://api.unsplash.com/photos/random',
   token: 'ToCg_dlprnchoDQzAFEdnUjGWwARHG_yYld-JuEYFqk',
 };
 
