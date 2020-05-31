@@ -4,9 +4,11 @@
   box-sizing: border-box;
   font-family: "Montserrat", Arial, Helvetica, sans-serif;
   font-weight: 600;
+  color: #ffffff;
+  outline: none;
 }
 body {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -27,10 +29,26 @@ body::before,
 }
 .body__image {
   z-index: -2;
+  object-fit: cover;
+  object-position: bottom;
 }
-.main {
-  flex-grow: 1;
-}
+
 .wrapper {
   padding: 0 20px;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+@media  (max-width: 400px)  {
+  .wrapper {
+    padding  : 0 10px;
+  }
 }

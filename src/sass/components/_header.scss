@@ -1,3 +1,11 @@
+@keyframes pulse {
+  0% {
+    filter: invert(0.5);    
+  }
+  100% {
+    filter: invert(1);    
+  }
+}
 .title {
   position: fixed;
   left: 0;
@@ -15,6 +23,11 @@
   &__buttons,
   &__search {
     display: flex;
+    color: #000000;
+    margin-bottom: 5px;
+  }
+  &__search {
+    width: 45%;
   }
   &__error {
     position: absolute;
@@ -26,73 +39,167 @@
     text-align: center;
   }
   &__input {
+    flex-grow: 1;
     border: 0;
+    padding-left: 10px;
     background: $btn-bg-color;
     border-radius: 5px 0 0 5px;
+    color: #ffffff;
   }
+
+  &__help {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    top: -30px;
+    right: 0;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    transition: 0.5s linear;
+  }
+
   .btn {
     height: $btn-size;
     border: 0;
-    
+    cursor: pointer;
+    &:hover {
+      background: $btn-bg-color-hover;
+      color: $btn-color-hover;
+    }
     &-refresh {
       width: $btn-size;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 5px;
-      // background: #000;
-      background: $btn-bg-color-active;
+      background: url("./src/assets/img/refresh-bg.png");
+      background-size: cover;
       img {
         width: 30%;
         height: 30%;
       }
+      &:hover {
+        background: center / cover no-repeat url("./src/assets/img/refresh-bg.png") , linear-gradient(rgba(240,240,240,0.2), rgba(240,240,240,0.2));
+        img {
+          filter: drop-shadow(1px -1px 3px yellow);
+        }
+      }
     }
-    &-cel,
-    &-far {
+    &-temp {
       width: $btn-size;
+      color: $btn-bg-color-active;
       background: $btn-bg-color;
-      color: $btn-color;
+      &:nth-of-type(1) {
+        border-radius: 5px 0 0 5px;
+      }
+      &:nth-of-type(2) {
+        border-radius: 0 5px 5px 0;
+      }
+      &-active {
+        background: $btn-bg-color-active;
+        color: $btn-color;
+      }
+    }
+    &-speak {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: $btn-size;
+      margin-left: 10px;
+      background: $btn-bg-color-active;
+      border-radius: 5px;
+
+      img {
+        width: 20px;
+        height: 20px;
+        filter: invert(1);
+        
+      }
     }
     &-lang {
-      width: 100px;
+      // width: 100px;
+      width: 100%;
+      min-width: 100px;
+      padding-right: 20px;
+      position: relative;
+      border-radius: 5px;
       // margin: 0 5px;
       background: $btn-bg-color-active;
       color: $btn-color;
+      text-transform: capitalize;
+      &:after {
+        content: "";
+        box-sizing: content-box;
+        position: absolute;
+        width: 0;
+        height: 0;
+        top: 50%;
+        right: 10px;
+        border: 5px solid transparent;
+        border-bottom-width: 0;
+        border-top-color: white;
+        transform: translate(0, -50%);
+      }
     }
-
-    &-cel {
-      border-radius: 5px 0 0 5px;
-    }
-    &-far {
-      border-radius: 0 5px 5px 0;;
-    }
-    &-active {
-      background: $btn-bg-color-active;
-      
+    &-clear {
+      width: 30px;
+      border: 0;
+      background: $btn-bg-color;
+      color: $btn-bg-color-active;
     }
     &-mic {
       width: 30px;
+      position: relative;
       background: $btn-bg-color;
+      border: 0;
+      cursor: pointer;
       img {
         filter: invert(0.5);
+        &:hover {
+          filter: invert(0.8) drop-shadow(0 0 5px yellow);
+        }
       }
+      &-active {
+        img:not(:hover) {
+          animation: 0.5s pulse linear infinite alternate;
+        }
+        .header__help {
+          top: 0;
+          right: 0;
+        }
+      }
+       
     }
     &-search {
       width: 100px;
       background: $btn-bg-color-active;
       border-radius: 0 5px 5px 0;
       color: $btn-color;
+      text-transform: capitalize;
     }
+    
   }
 }
-.dropdown {
-  position: relative;
-  margin: 0 5px;
-  &__menu {
-    position: absolute;
-    left: 0;
-    top: 100%;
-    display: flex;
-    flex-direction: column;
+
+@media (max-width: 700px) {
+  .header {
+    &__container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__buttons {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    &__search {
+      width: 100%;
+
+    }
+
+    &__input {
+      flex-grow: 1;
+    }
   }
 }
