@@ -13,9 +13,7 @@ export default class Header {
     this.patchPhoto.src = images.patch;
     this.save = { lang: mainLang, cel: true, volume: 1 };
     this.speaking = false;
-
     this.Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
     this.speaker = speechSynthesis;
     this.voiceList = this.speaker.getVoices();
     this.spText = new SpeechSynthesisUtterance();
@@ -54,6 +52,7 @@ export default class Header {
       .on('click', () => this.changeCel(true));
     const iconSpeak = Elem('img')
       .prop([['src', images.speak], ['alt', 'sound']]);
+
     let clickTimeout;
     const btnSpeak = Elem('button', 'btn btn-speak', iconSpeak)
       .on('click', () => {
@@ -69,6 +68,7 @@ export default class Header {
         clickTimeout = null;
         this.changeSetupSpeak();
       });
+
     const buttons = Elem('div', 'header__buttons', [
       btnRefresh,
       dropdownMenu,
@@ -83,11 +83,13 @@ export default class Header {
           this.getInput();
         }
       }).native;
+
     const btnClear = Elem('button', 'btn-clear', '✖')
       .on('click', () => {
         this.searchInput.value = '';
         this.searchInput.focus();
       });
+
     let btnMic;
     if (this.Recognition) {
       const icoMic = Elem('img').prop([
@@ -95,7 +97,8 @@ export default class Header {
         ['alt', 'mic'],
       ]);
       const help = Elem('div', 'header__help', 'i')
-        .on('click', () => {
+        .on('click', (event) => {
+          event.stopPropagation();
           this.showHelp();
         });
       btnMic = Elem('button', 'btn-mic', [icoMic, help])
@@ -114,25 +117,35 @@ export default class Header {
       btnMic,
       btnSearch,
     ]);
+
     const placeErrors = Elem('div', 'header__error');
     Elem('div', 'header__container', [buttons, search, placeErrors])
       .parent('.header .wrapper');
   }
 
   showHelp() {
-    // console.log(langs[this.save.lang].command);
-    let mainElement;
     const list = Object.keys(langs[this.save.lang].command)
       .map((command) => {
         const type = Elem('div', 'help__cmd', command);
         const value = Elem('div', 'help__word', `"${langs[this.save.lang].command[command]}"`);
         return Elem('div', 'help__line', [type, value]);
       });
+
     const title = Elem('div', 'help__title', 'Commands');
+
+    let mainElement;
     const clear = Elem('button', 'help__clear', '✖')
-      .on('click', () => { mainElement.remove(); });
+      .on('click', () => {
+        mainElement.remove();
+        document.onclick = null;
+      });
+
     const window = Elem('div', 'help', [clear, title, ...list]);
+
     mainElement = Elem('div', 'background', window).parent('.header__container').native;
+    blurFunc('.help', () => {
+      mainElement.remove();
+    });
   }
 
   getInput() {
@@ -142,13 +155,20 @@ export default class Header {
     }
   }
 
-  changeSetupSpeak(arg) {
-    const stop = arg || { timer: null };
+  changeSetupSpeak(arg = { timer: null }) {
+    const stop = arg;
     let mainElement;
+
     const volumeText = Elem('div', 'setup__volume-text', `Volume: <span>${this.save.volume * 100}</span>%`);
+
     const volume = Elem('input', 'setup__volume')
-      .attr([['type', 'range']])
-      .prop([['min', '0'], ['max', '1'], ['step', '0.1'], ['value', this.save.volume]])
+      .attr([
+        ['type', 'range'],
+        ['min', '0'],
+        ['max', '1'],
+        ['step', '0.1'],
+      ])
+      .prop([['value', this.save.volume]])
       .on('input', (event) => {
         Elem('.setup__volume-text span', false, String(event.currentTarget.value * 100));
         if (stop.timer) {
@@ -164,17 +184,19 @@ export default class Header {
           document.onclick = null;
         }, 3000);
       });
-    blurFunc('.setup', (elm) => { elm.remove(); });
+
     mainElement = Elem('div', 'setup', [volumeText, volume])
       .parent('.header__container').native;
+
+    blurFunc('.setup', (elm) => { elm.remove(); });
     return mainElement;
   }
 
   searching(isCityOnly) {
     this.refreshPhoto();
+
     getGeocoder({ q: this.geoQuery, language: this.save.lang })
       .then((res) => {
-        // console.log('geo=', res);
         window.app.mainPage.weather.city = res.results[0].formatted;
         if (!isCityOnly) {
           Header.cityDate(res.results[0].annotations.timezone.offset_sec / 3600);
@@ -186,13 +208,13 @@ export default class Header {
       })
       .catch((err) => {
         this.error('geocode', err);
-        // console.log('error');
       });
   }
 
   static cityDate(offsetCity) {
     const now = new Date();
     const offsetHere = now.getTimezoneOffset() / 60;
+
     now.setHours(now.getHours() + offsetHere + offsetCity);
     window.app.mainPage.weather.currentDate = now;
   }
@@ -203,8 +225,8 @@ export default class Header {
     } else {
       this.speaking = startEnd;
     }
+
     Elem('.btn-mic').cls(`${this.speaking ? '.' : '_'}btn-mic-active`);
-    // console.log('speak=', this.speaking);
 
     if (this.speaking) {
       this.record = this.getSpeechWord();
@@ -217,20 +239,19 @@ export default class Header {
 
   getSpeechWord() {
     const rec = new (this.Recognition)();
+
     rec.lang = this.save.lang;
     rec.interimResults = false;
     rec.continuous = true;
     rec.onresult = (e) => {
       this.speakResult = e.results[e.results.length - 1][0].transcript.trim();
-      console.log('result=', this.speakResult);
       this.sayCommand();
     };
+
     rec.onerror = () => {
       this.error('speaking', Error('error1'));
-      console.log('onerror');
     };
     rec.onend = () => {
-      console.log('onend');
       this.speak(false);
     };
     return rec;
@@ -240,6 +261,7 @@ export default class Header {
     const cmd = langs[this.save.lang].command;
     const stop = {};
     let element;
+
     switch (this.speakResult.toLowerCase()) {
       case cmd.louder:
         this.save.volume = this.save.volume < 1 ? (this.save.volume * 10 + 1) / 10 : 1;
@@ -266,6 +288,7 @@ export default class Header {
         {
           const listLangs = Object.keys(langs);
           const numLang = (listLangs.indexOf(this.save.lang) + 1) % listLangs.length;
+
           Elem('.btn-lang', false, listLangs[numLang]);
           this.changeLang(listLangs[numLang]);
           document.querySelectorAll('.dropdown__item').forEach((item, i) => {
@@ -289,6 +312,7 @@ export default class Header {
 
   speakWeather() {
     let words = langs[this.save.lang].command.temperature;
+
     words += ` ${Elem('.weather__today-temp').native.textContent}`;
     words += ` ${Elem('.today__feel .today__text').native.textContent}`;
     words += Elem('.today__feel .today__value').native.textContent;
@@ -299,8 +323,6 @@ export default class Header {
     words += `, ${Elem('.today__humid .today__text').native.textContent}`;
     words += Elem('.today__humid .today__value').native.textContent;
     this.voice(words);
-    console.log('text=',words);
-    
   }
 
   voice(text) {
@@ -308,24 +330,25 @@ export default class Header {
       this.speak(false);
     }
     this.voiceList = this.speaker.getVoices();
+
     let voiceLang = this.voiceList
       .find((item) => item.lang.slice(0, 2) === this.save.lang);
+
     if (!voiceLang) {
-      voiceLang = this.voiceList.find((item) => item.lang.slice(0, 2) === 'ru');
+      voiceLang = this.voiceList
+        .find((item) => item.lang.slice(0, 2) === 'ru');
     }
-    console.log('voice find =', voiceLang);
 
     this.spText.voice = voiceLang;
     this.spText.text = text;
     this.spText.volume = this.save.volume;
-    console.log('volume=', this.save.volume);
     this.speaker.speak(this.spText);
   }
 
   refreshPhoto() {
-    let add = '';
     const date = window.app.mainPage.weather.currentDate || new Date();
     const month = date.getMonth();
+    let add = '';
     if (month >= 2 && month < 5) {
       add += '+spring';
     } else if (month >= 5 && month < 8) {
@@ -335,6 +358,7 @@ export default class Header {
     } else {
       add += '+winter';
     }
+
     const hour = date.getHours();
     if (hour >= 6 && month < 12) {
       add += '+morning';
@@ -345,6 +369,7 @@ export default class Header {
     } else {
       add += '+night';
     }
+
     getPhoto(`weather${add}`)
       .then((blob) => {
         this.bodyImage.src = URL.createObjectURL(blob);
@@ -363,8 +388,9 @@ export default class Header {
       this.searching(true);
       window.app.mainPage.weather.renderDescr();
       if (this.record) {
+        const TIMER = 1000;
         this.speak(false);
-        setTimeout(() => this.speak(true), 1000);
+        setTimeout(() => this.speak(true), TIMER);
       }
     }
   }
@@ -373,6 +399,7 @@ export default class Header {
     document.querySelectorAll('[i18n]').forEach((item) => {
       const element = item;
       const value = langs[this.save.lang][element.getAttribute('i18n')];
+
       if (value) {
         if (typeof value === 'string') {
           element.textContent = value;

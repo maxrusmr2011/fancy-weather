@@ -5,6 +5,7 @@ export default function getGeocoder(addQuery) {
   const query = ['q', 'language']
     .reduce((res, item) => (item in addQuery ? `${res}&${item}=${addQuery[item]}` : res), startVal);
   const url = `${geocodeApi.url}?key=${geocodeApi.token}${query}`;
+
   return fetch(url)
     .then((res) => {
       if (!res.ok) {

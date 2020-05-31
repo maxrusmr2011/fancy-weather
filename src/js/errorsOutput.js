@@ -2,6 +2,7 @@ import Elem from './utils/Elem';
 
 export default function errorsOutput(queryTarget) {
   const target = document.querySelector(queryTarget);
+
   return function message(placeError, objError) {
     const DELAY = 10000;
     let strError = `Error ${placeError}`;

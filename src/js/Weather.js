@@ -12,13 +12,12 @@ export default class Weather {
   }
 
   init() {
-    this.render();
+    Weather.render();
     this.error = errorOutput('.header__error');
   }
 
-  render() {
+  static render() {
     const city = Elem('div', 'weather__city');
-
     const todayWeek = Elem('span', 'today-week').attr([['i18n', 'weekday']]);
     const todayDay = Elem('span', 'today-day');
     const todayMinth = Elem('span', 'today-month').attr([['i18n', 'month']]);
@@ -30,17 +29,18 @@ export default class Weather {
       todayMinth,
       todayTime,
     ]);
+
     const top = Elem('div', 'weather__top', [city, dateToday]);
     const tempToday = Elem('div', 'weather__today-temp');
     const imgToday = Elem('img').prop([['alt', 'icon']]);
     const iconToday = Elem('div', 'weather__today-icon', imgToday);
-
 
     const descr = Elem('div', 'today__descr');
     const listAbout = ['feel', 'wind', 'humid'].map((item) => {
       const text = Elem('span', 'today__text').attr([['i18n', item]]);
       const value = Elem('span', 'today__value');
       const list = [text, value];
+
       if (item === 'wind') {
         list.push(Elem('span').attr([['i18n', 'speed']]));
       }
@@ -48,7 +48,7 @@ export default class Weather {
     });
     const weatherToday = Elem('div', 'weather__today-about', [descr, ...listAbout]);
     const today = Elem('div', 'weather__today', [tempToday, iconToday, weatherToday]);
-    
+
     const list = [0, 1, 2].map(() => {
       const weekday = Elem('div', 'weather__weekday').attr([['i18n', 'weekday']]);
       const temp = Elem('div', 'weather__temp');
@@ -62,18 +62,15 @@ export default class Weather {
     Elem('div', 'weather', [top, today, next]).parent('.main__container');
   }
 
-  // getDataWeather(query = { q: 'Kharkiv' }, city) {
   getDataWeather() {
     const loc = window.app.header.location;
     const optionData = { lat: loc[1], lon: loc[0] };
-    // optionData.lang = window.app.header.save.lang;
-    // optionData.lang = 'en';
+
     optionData.lang = mainLang;
     optionData.units = 'metric';
 
     getWeather(optionData)
       .then((res) => {
-        // console.log('yes w', res);
         this.dataWeather = res;
         window.app.mainPage.mapLocate.renderMap();
         this.renderWeather();
@@ -81,17 +78,15 @@ export default class Weather {
       })
       .catch((err) => {
         this.error('weather', err);
-        console.log('no w', err);
       });
   }
 
-  iconSrc(id, isUseTime) {
+  static iconSrc(id, isUseTime) {
     let icon = weatherIcons.find((item) => id <= item.from);
-    // console.log('obj',icon);
-    
+
     if (icon) {
       const hours = (new Date()).getHours();
-      if (!isUseTime || hours >= 6 && hours < 18) {
+      if (!isUseTime || (hours >= 6 && hours < 18)) {
         icon = icon.src_day;
       } else {
         icon = icon.src_night;
@@ -99,8 +94,6 @@ export default class Weather {
     } else {
       icon = './src/assets/img/weather/few-clouds.svg';
     }
-    // console.log('icon=',icon);
-    
     return icon;
   }
 
@@ -121,6 +114,7 @@ export default class Weather {
 
   timerTic() {
     const optionTime = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+
     Elem('.today-time', false, this.currentDate.toLocaleString('ru', optionTime));
     this.currentDate.setSeconds(this.currentDate.getSeconds() + 1);
     if (!this.currentDate.getMinutes() && !this.currentDate.getSeconds()) {
@@ -131,6 +125,7 @@ export default class Weather {
   renderDescr() {
     const element = document.querySelector('.today__descr');
     const text = this.dataWeather.list[0].weather[0].description;
+
     if (window.app.header.save.lang === mainLang) {
       element.textContent = text;
     } else {
@@ -146,24 +141,25 @@ export default class Weather {
   }
 
   renderWeather() {
-    // Elem('.today__descr', false, this.dataWeather.list[0].weather[0].description);
-    this.renderDescr();
+    const SECOND = 1000;
 
+    this.renderDescr();
     Elem('.weather__city', false, this.city);
     this.timerTic();
     Elem('.weather__today-icon img', 'imgs')
-      .prop([['src', this.iconSrc(this.dataWeather.list[0].weather[0].id, true)]]);
+      .prop([['src', Weather.iconSrc(this.dataWeather.list[0].weather[0].id, true)]]);
     Elem('.today__wind .today__value', false, `: ${this.dataWeather.list[0].wind.speed}`);
     Elem('.today__humid .today__value', false, `: ${this.dataWeather.list[0].main.humidity}%`);
 
     document.querySelectorAll('.weather__day')
       .forEach((item, i) => {
         const day = new Date(this.currentDate.getTime());
+
         day.setDate(day.getDate() + i + 1);
         const objDay = this.dataWeather.list
           .find((one) => one.dt_txt === Weather.formSearchDate(day));
         const iconElement = item.querySelector('.weather__icon img');
-        iconElement.src = this.iconSrc(objDay.weather[0].id);
+        iconElement.src = Weather.iconSrc(objDay.weather[0].id);
         const week = item.querySelector('.weather__weekday');
         week.dataset.index = day.getDay();
         week.dataset.index1 = 0;
@@ -175,7 +171,7 @@ export default class Weather {
     }
     this.stopTimer = setInterval(() => {
       this.timerTic();
-    }, 1000);
+    }, SECOND);
   }
 
   static formSearchDate(dateIn) {

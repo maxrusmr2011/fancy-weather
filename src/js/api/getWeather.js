@@ -8,6 +8,7 @@ export default function getWeather(addQuery) {
     }
   });
   const url = `${weatherApi.url}?APPID=${weatherApi.token}${query}`;
+
   return fetch(url)
     .then((res) => {
       if (!res.ok) {

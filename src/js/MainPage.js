@@ -9,12 +9,8 @@ export default class MainPage {
   }
 
   init() {
-    this.render();
+    Elem('div', 'main__container').parent('.main .wrapper');
     this.weather.init();
     this.mapLocate.init();
-  }
-
-  render() {
-    Elem('div', 'main__container').parent('.main .wrapper');
   }
 }
