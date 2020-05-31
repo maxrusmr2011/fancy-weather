@@ -21,7 +21,7 @@
 		<path fill="url(#gradWhite)" d="M11,47 Q13,37 21,42 Q31,30 41,38 A28,21 -25 1,1 35,75 Q23,85 19,73 A12,12 0 0,1 11,47Z" />
 	</symbol>
 	<symbol id="thunderBolt">
-    <path fill="black" d="M15,0 L1,23 L8,23 L0,40 L15,19 L8,19Z" />
+    <path fill="yellow" d="M15,0 L1,23 L8,23 L0,40 L15,19 L8,19Z" />
   </symbol>
 	
 	<g>
